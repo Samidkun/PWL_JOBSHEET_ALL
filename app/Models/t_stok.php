@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class t_stok extends Model
 {
     use HasFactory;
+
+
+
+    protected $table = 't_stok'; 
+
 }
