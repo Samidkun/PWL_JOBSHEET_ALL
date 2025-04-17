@@ -1,12 +1,12 @@
 <body>
-    <h1>Form Tambah Data User</h1>
-    <a href="{{route('/user')}}">Kembali</a>
+    <h1>Add Data Use Formr</h1>
+    <a href="{{route('/user')}}">Back</a>
     <form method="POST" action="{{route('/user/tambah_simpan')}}">
     {{csrf_field()}}
     <label>Username</label>
     <input type="text" name="username" placeholder="Masukkan Username">
     <br>
-    <label>Nama</label>
+    <label>Name</label>
     <input type="text" name="nama" placeholder="Masukkan Nama">
     <br>
     <label>Password</label>

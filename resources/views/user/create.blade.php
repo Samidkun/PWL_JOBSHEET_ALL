@@ -31,7 +31,7 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-1 control-label col-form-label">Nama</label>
+                    <label class="col-1 control-label col-form-label">Name</label>
                     <div class="col-11">
                         <input type="text" class="form-control" id="nama" name="nama" value="{{ old('nama') }}" required>
                         @error('nama')
@@ -51,7 +51,7 @@
                     <label class="col-1 control-label col-form-label"></label>
                     <div class="col-11">
                         <button type="submit" class="btn btn-primary btn-sm">Save</button>
-                        <a class="btn btn-sm btn-default ml-1" href="{{ url('user') }}">Kembali</a>
+                        <a class="btn btn-sm btn-default ml-1" href="{{ url('user') }}">Back</a>
                     </div>
                 </div>
             </form>

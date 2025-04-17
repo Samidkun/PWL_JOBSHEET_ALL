@@ -1,16 +1,16 @@
 <body>
     <h1>Data User</h1>
-    <a href="{{ route('user.tambah') }}">Tambah User</a>
+    <a href="{{ route('user.tambah') }}">Add User</a>
     <table border="1" cellpadding="2" cellspacing="0">
         <tr>
             {{-- <th>Jumlah Pengguna</th> --}}
             <th>ID</th>
             <th>Username</th>
-            <th>Nama</th>
-            <th>Level Pengguna</th>
-            <th>Kode Level</th>
-            <th>Nama Level</th>
-            <th>Aksi</th>
+            <th>Name</th>
+            <th>User Level</th>
+            <th>Level Code</th>
+            <th>Level Name</th>
+            <th>Action</th>
             
             
 
@@ -26,7 +26,7 @@
             <td>{{ $d->level_id }}</td>
             <td>{{ $d->level->level_kode }}</td>
             <td>{{ $d->level->level_nama }}</td>
-            <td><a href="{{ route('user.ubah', $d->user_id) }}">Ubah</a> | <a href="{{ route('user.hapus', $d->user_id) }}">Hapus</a></td>
+            <td><a href="{{ route('user.ubah', $d->user_id) }}">Change</a> | <a href="{{ route('user.hapus', $d->user_id) }}">Hapus</a></td>
         </tr>
         @endforeach
     </table>

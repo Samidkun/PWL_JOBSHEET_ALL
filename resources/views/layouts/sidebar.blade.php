@@ -39,14 +39,14 @@
           <a href="{{ url('/kategori') }}" class="nav-link {{ ($activeMenu == 
   'kategori')? 'active' : '' }} "> 
             <i class="nav-icon far fa-bookmark"></i> 
-            <p>Goods Category</p> 
+            <p>Category</p> 
           </a> 
         </li> 
         <li class="nav-item"> 
           <a href="{{ url('/barang') }}" class="nav-link {{ ($activeMenu == 
   'barang')? 'active' : '' }} "> 
             <i class="nav-icon far fa-list-alt"></i> 
-            <p>Goods Data</p> 
+            <p>Item</p> 
           </a> 
         </li> 
         <li class="nav-header">Transaction Data</li> 
@@ -54,14 +54,21 @@
           <a href="{{ url('/stok') }}" class="nav-link {{ ($activeMenu == 'stok')? 
   'active' : '' }} "> 
             <i class="nav-icon fa-cubes"></i> 
-            <p>Stock of Goods</p> 
+            <p>Stock</p> 
           </a> 
         </li> 
         <li class="nav-item"> 
-          <a href="{{ url('/barang') }}" class="nav-link {{ ($activeMenu == 
+          <a href="{{ url('/penjualan') }}" class="nav-link {{ ($activeMenu == 
   'penjualan')? 'active' : '' }} "> 
             <i class="nav-icon fas fa-cash-register"></i> 
-            <p>Sales Transactions</p> 
+            <p>Sales</p> 
+          </a> 
+        </li> 
+        <li class="nav-item"> 
+          <a href="{{ url('/penjualan-detail') }}" class="nav-link {{ ($activeMenu == 
+  'penjualan-detail')? 'active' : '' }} "> 
+            <i class="nav-icon fas fa-cash-register"></i> 
+            <p>Sales Details</p> 
           </a> 
         </li> 
       </ul> 

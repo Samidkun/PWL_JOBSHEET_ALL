@@ -8,8 +8,8 @@
         <div class="card-body">
             @empty($user)
                 <div class="alert alert-danger alert-dismissible">
-                    <h5><i class="icon fas fa-ban"></i> Kesalahan!</h5>
-                    Data yang Anda cari tidak ditemukan.
+                    <h5><i class="icon fas fa-ban"></i> Error!</h5>
+                    The data you are looking for was not found.
                 </div>
             @else
                 <table class="table table-bordered table-striped table-hover table-sm">
@@ -26,7 +26,7 @@
                         <td>{{ $user->username }}</td>
                     </tr>
                     <tr>
-                        <th>Nama</th>
+                        <th>Name</th>
                         <td>{{ $user->nama }}</td>
                     </tr>
                     <tr>
@@ -35,7 +35,7 @@
                     </tr>
                 </table>
             @endempty
-            <a href="{{ url('user') }}" class="btn btn-sm btn-default mt-2">Kembali</a>
+            <a href="{{ url('user') }}" class="btn btn-sm btn-default mt-2">Back</a>
         </div>
     </div>
 @endsection
