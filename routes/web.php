@@ -61,6 +61,23 @@ Route::group(['prefix' => 'level'], function () {
     Route::delete('/{id}', [LevelController::class, 'destroy']);
 });
 
+Route::middleware(['auth'])->group(function () { // semua route dalam group ini harus login dulu
+    Route::get('/', [WelcomeController::class, 'index']);
+    
+    // Route level - harus punya role ADM (Administrator)
+    Route::middleware(['authorize:ADM'])->group(function () {
+        Route::get('/level', [LevelController::class, 'index']);
+        Route::post('/level/list', [LevelController::class, 'list']); // untuk list json datatables
+        Route::get('/level/create', [LevelController::class, 'create']);
+        Route::post('/level', [LevelController::class, 'store']);
+        Route::get('/level/{id}/edit', [LevelController::class, 'edit']); // tampilkan form edit
+        Route::put('/level/{id}', [LevelController::class, 'update']); // proses update data
+        Route::delete('/level/{id}', [LevelController::class, 'destroy']); // proses hapus data
+    });
+
+    // route Kategori
+});
+
 Route::group(['prefix' => 'kategori'], function () {
     Route::get('/', [KategoriController::class, 'index']);
     Route::post('/list', [KategoriController::class, 'list']);
