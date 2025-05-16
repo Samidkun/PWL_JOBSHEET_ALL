@@ -22,10 +22,12 @@ use App\Http\Controllers\StokController;
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\AuthController;
-Route:: get ('/', [WelcomeController :: class,'index' ]);
 
 
-Route::group(['prefix'=>'user'], function(){
+Route::get('/', [WelcomeController::class, 'index']);
+
+
+Route::group(['prefix' => 'user'], function () {
     Route::get('/', [UserController::class, 'index']);
     Route::post('/list', [UserController::class, 'list']);
     Route::get('/create', [UserController::class, 'create']);
@@ -61,21 +63,35 @@ Route::group(['prefix' => 'level'], function () {
     Route::delete('/{id}', [LevelController::class, 'destroy']);
 });
 
+
+
 Route::middleware(['auth'])->group(function () { // semua route dalam group ini harus login dulu
     Route::get('/', [WelcomeController::class, 'index']);
-    
+
     // Route level - harus punya role ADM (Administrator)
     Route::middleware(['authorize:ADM'])->group(function () {
-        Route::get('/level', [LevelController::class, 'index']);
-        Route::post('/level/list', [LevelController::class, 'list']); // untuk list json datatables
-        Route::get('/level/create', [LevelController::class, 'create']);
-        Route::post('/level', [LevelController::class, 'store']);
-        Route::get('/level/{id}/edit', [LevelController::class, 'edit']); // tampilkan form edit
-        Route::put('/level/{id}', [LevelController::class, 'update']); // proses update data
-        Route::delete('/level/{id}', [LevelController::class, 'destroy']); // proses hapus data
+        Route::group(['prefix' => 'level'], function () {
+            Route::get('/', [LevelController::class, 'index']);
+            Route::post('/list', [LevelController::class, 'list']); // untuk list json datatables
+            Route::get('/create', [LevelController::class, 'create']);
+            Route::post('/', [LevelController::class, 'store']);
+            Route::get('/{id}/edit', [LevelController::class, 'edit']); // tampilkan form edit
+            Route::put('/{id}', [LevelController::class, 'update']); // proses update data
+            Route::delete('/{id}', [LevelController::class, 'destroy']); // proses hapus data
+        });
     });
-
-    // route Kategori
+    Route::middleware(['authorize:ADM,MNG'])->group(function () {
+        Route::group(['prefix' => 'barang'], function () {
+            Route::get('/', [BarangController::class, 'index']);
+            Route::post('/list', [BarangController::class, 'list']);
+            Route::get('/create_ajax', [BarangController::class, 'create_ajax']);
+            Route::post('/barang_ajax', [BarangController::class, 'store_ajax']);
+            Route::get('/{id}/edit_ajax', [BarangController::class, 'edit_ajax']);
+            Route::put('/{id}/update_ajax', [BarangController::class, 'update_ajax']);
+            Route::get('/{id}/delete_ajax', [BarangController::class, 'confirm_ajax']);
+            Route::delete('/{id}/delete_ajax', [BarangController::class, 'delete_ajax']);
+        });
+    });
 });
 
 Route::group(['prefix' => 'kategori'], function () {
@@ -96,24 +112,10 @@ Route::group(['prefix' => 'kategori'], function () {
     Route::delete('/{id}', [KategoriController::class, 'destroy']);
 });
 
+// Route group untuk role ADM (Administrator) dan MNG (Manager)
 
-Route::group(['prefix' => 'barang'], function () {
-    Route::get('/', [BarangController::class, 'index']);
-    Route::post('/list', [BarangController::class, 'list']);
-    Route::get('/create', [BarangController::class, 'create']);
-    Route::post('/', [BarangController::class, 'store']);
-    Route::get('/create_ajax', [BarangController::class, 'create_ajax']);
-    Route::post('/ajax', [BarangController::class, 'store_ajax']);
-    Route::get('/{id}', [BarangController::class, 'show']);
-    Route::get('/{id}/edit', [BarangController::class, 'edit']);
-    Route::put('/{id}', [BarangController::class, 'update']);
-    Route::get('/{id}/edit_ajax', [BarangController::class, 'edit_ajax']);
-    Route::put('/{id}/update_ajax', [BarangController::class, 'update_ajax']);
-    Route::get('/{id}/delete_ajax', [BarangController::class, 'confirm_ajax']);
-    Route::delete('/{id}/delete_ajax', [BarangController::class, 'delete_ajax']);
-    Route::get('/{id}/show_ajax', [BarangController::class, 'show_ajax']);
-    Route::delete('/{id}', [BarangController::class, 'destroy']);
-});
+
+
 
 Route::group(['prefix' => 'stok'], function () {
     Route::get('/', [StokController::class, 'index']);
@@ -176,19 +178,19 @@ Route::group(['prefix' => 'penjualan-detail'], function () {
     Route::get('/{id}/show_ajax', [PenjualanDetailController::class, 'show_ajax']);
 
     // Route::post('t_penjualan_detail/list', [PenjualanDetailController::class, 'list']);
-    
-    Route::get('/penjualan-detail/create', [PenjualanDetailController::class, 'create'])->name('penjualan-detail.create');
-    Route::post('/penjualan-detail', [PenjualanDetailController::class, 'store'])->name('penjualan-detail.store'); 
-    Route::get('/penjualan-detail', [PenjualanDetailController::class, 'index'])->name('penjualan-detail.index');
 
+    Route::get('/penjualan-detail/create', [PenjualanDetailController::class, 'create'])->name('penjualan-detail.create');
+    Route::post('/penjualan-detail', [PenjualanDetailController::class, 'store'])->name('penjualan-detail.store');
+    Route::get('/penjualan-detail', [PenjualanDetailController::class, 'index'])->name('penjualan-detail.index');
 });
 
-Route::pattern('id','[0-9]+');
-Route::get('login', [AuthController::class,'login'])->name('login');
-Route::post('login', [AuthController::class,'postlogin']);
-Route::get('logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth') ;
+Route::pattern('id', '[0-9]+');
+Route::get('login', [AuthController::class, 'login'])->name('login');
+Route::post('login', [AuthController::class, 'postlogin']);
+Route::get('logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
+Route::get('register', [AuthController::class, 'register'])->name('signup');
+Route::post('register', [AuthController::class, 'postregister'])->name('signup.post');
 
 Route::middleware(['auth',])->group(function () {
     //
 });
-    
