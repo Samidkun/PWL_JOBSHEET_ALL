@@ -93,6 +93,40 @@ Route::middleware(['auth'])->group(function () { // semua route dalam group ini 
         });
     });
 });
+ Route::group(['prefix' => 'barang'], function () {
+    // Route Index (biasanya di paling atas)
+    Route::get('/', [BarangController::class, 'index']);
+    Route::post('/list', [BarangController::class, 'list']);
+
+    // Route untuk Import (segmen statis, letakkan sebelum {id})
+    Route::get('/import', [BarangController::class, 'import']);
+    Route::post('/import_ajax', [BarangController::class, 'import_ajax']);
+     Route::get('/export_excel', [BarangController::class, 'export_excel']);
+        Route::get('/export_pdf', [BarangController::class, 'export_pdf']);
+
+    // Route Create (segmen statis, letakkan sebelum {id})
+    Route::get('/create', [BarangController::class, 'create']);
+    Route::post('/', [BarangController::class, 'store']);
+
+    // Route Create AJAX (segmen statis, letakkan sebelum {id})
+    Route::get('/create_ajax', [BarangController::class, 'create_ajax']);
+    Route::post('/ajax', [BarangController::class, 'store_ajax']); // Atau '/store_ajax'
+
+    // Route dengan parameter {id} (letakkan setelah semua route statis)
+    Route::get('/{id}/show_ajax', [BarangController::class, 'show_ajax']); // AJAX Show
+    Route::get('/{id}/edit_ajax', [BarangController::class, 'edit_ajax']); // AJAX Edit View
+    Route::put('/{id}/update_ajax', [BarangController::class, 'update_ajax']); // AJAX Update
+    Route::get('/{id}/delete_ajax', [BarangController::class, 'confirm_ajax']); // AJAX Confirm Delete View
+    Route::delete('/{id}/delete_ajax', [BarangController::class, 'delete_ajax']); // AJAX Delete
+
+    // Route standar dengan parameter {id} (jika masih digunakan)
+    Route::get('/{id}', [BarangController::class, 'show']); // Standard Show
+    Route::get('/{id}/edit', [BarangController::class, 'edit']); // Standard Edit View
+    Route::put('/{id}', [BarangController::class, 'update']); // Standard Update
+    Route::delete('/{id}', [BarangController::class, 'destroy']); // Standard Delete
+});
+
+
 
 Route::group(['prefix' => 'kategori'], function () {
     Route::get('/', [KategoriController::class, 'index']);
@@ -194,3 +228,6 @@ Route::post('register', [AuthController::class, 'postregister'])->name('signup.p
 Route::middleware(['auth',])->group(function () {
     //
 });
+
+Route::get('profile', [UserController::class, 'profile'])->name('profile');
+Route::post('/profile/update-picture', [UserController::class, 'updateProfilePicture']);

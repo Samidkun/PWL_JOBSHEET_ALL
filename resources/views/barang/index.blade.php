@@ -1,47 +1,54 @@
 @extends('layouts.template')
 
 @section('content')
-    <div class="card card-outline card-primary">
+    <div class="card">
         <div class="card-header">
-            <h3 class="card-title">{{ $page->title }}</h3>
+            <h3 class="card-title">Daftar barang</h3>
+
             <div class="card-tools">
-                <a class="btn btn-sm btn-primary mt-1" href="{{ url('barang/create') }}">Add</a>
-                <button onclick="modalAction('{{ url('barang/create_ajax') }}')" class="btn btn-sm btn-success mt-1">Add Ajax</button>
+                <button onclick="modalAction('{{ url('/barang/import') }}')" class="btn btn-warning">Import Barang</button>
+                <a href="{{ url('/barang/export_excel') }}" class="btn btn-dark"><i class="fa fa-file-excel"></i>Export
+                    Barang(Excel)</a>
+                <a href="{{ url('/barang/export_pdf') }}" class="btn btn-secondary"><i class="fa fa-file-pdf"></i> Export
+                    Barang(PDF)</a>
+                <button onclick="modalAction('{{ url('/barang/create_ajax') }}')" class="btn btn-success">Tambah Data
+                    (Ajax)</button>
             </div>
         </div>
         <div class="card-body">
-            @if (session('success'))
-                <div class="alert alert-success">{{ session('success') }}</div>
-            @endif
-            @if (session('error'))
-                <div class="alert alert-danger">{{ session('error') }}</div>
-            @endif
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="form-group row">
-                        <label class="col-1 control-label col-form-label">Filter: </label>
-                        <div class="col-3">
-                            <select class="form-control" id="kategori_id" name="kategori_id" required>
-                                <option value="">- All -</option>
-                                @foreach($kategori as $item)
-                                    <option value="{{ $item->kategori_id }}">{{ $item->kategori_nama }}</option>
-                                @endforeach
-                            </select>
-                            <small class="form-text text-muted">Item Category</small>
+            <!-- untuk Filter data -->
+            <div id="filter" class="form-horizontal filter-date p-2 border-bottom mb-2">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group form-group-sm row text-sm mb-0">
+                            <label for="filter_date" class="col-md-1 col-form-label">Filter</label>
+                            <div class="col-md-3">
+                                <select name="kategori_id" id="kategori_id" class="form-control">
+                                    <option value="">- Semua -</option>
+                                    @foreach($kategori as $k)
+                                        <option value="{{ $k->kategori_id }}">{{ $k->kategori_nama }}</option>
+                                    @endforeach
+                                </select>
+                                <small class="form-text text-muted">Kategori Barang</small>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> @if(session('success'))
+            <div class="alert alert-success">{{ session('success') }}</div> @endif
+            @if(session('error'))
+            <div class="alert alert-danger">{{ session('error') }}</div> @endif
+
             <table class="table table-bordered table-striped table-hover table-sm" id="table_barang">
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Item Code</th>
-                        <th>Category Name</th>
-                        <th>Item Name</th>
-                        <th>Purchase Price</th>
-                        <th>Selling Price</th>
-                        <th>Action</th>
+                        <th>Kode Barang</th>
+                        <th>Nama Kategori</th>
+                        <th>Nama Barang</th>
+                        <th>Harga Beli</th>
+                        <th>Harga Jual</th>
+                        <th>Aksi</th>
                     </tr>
                 </thead>
             </table>
@@ -111,13 +118,20 @@
                             orderable: true,
                             searchable: false
                         }, {
-                            data: "aksi",
+                            data: "action",
                             className: "",
                             orderable: false,
                             searchable: false
                         }
                     ]
                 });
+
+                $('#table-barang_filter input').unbind().bind().on('keyup', function (e) {
+                    if (e.keyCode == 13) { // enter key
+                        tableBarang.search(this.value).draw();
+                    }
+                });
+
                 $('#kategori_id').on('change', function () {
                     dataBarang.ajax.reload();
                 });

@@ -82,12 +82,18 @@
       <li class="nav-item">
         <a href="#" class="nav-link" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
           <i class="nav-icon fas fa-sign-out-alt"></i>
-          <p>Logout</p>
+          <p style="color: red;">Logout</p>
         </a>
         <form id="logout-form" action="{{ route('logout') }}" method="GET" style="display: none;">
           @csrf
         </form>
       </li>
+<li class="nav-item">
+    <a href="{{ route('profile') }}" class="nav-link">
+        <i class="nav-icon fas fa-user"></i>
+        <p>Profile</p>
+    </a>
+</li>
 
     </ul>
   </nav>
